@@ -1,0 +1,174 @@
+/* src/pages/MapasPage.module.css */
+
+.mapaPage {
+  min-height: 100vh;
+  background-color: #142C51;
+  padding-bottom: 6rem; /* espaço para o BottomNav */
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
+.header {
+  text-align: center;
+  padding: 1rem;
+}
+
+.logo {
+  width: 180px;
+  margin-bottom: 1rem;
+}
+
+.filtros {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: #8DB4F4;
+}
+
+.filtro {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+
+.filtroIcon {
+  width: 16px;
+  vertical-align: middle;
+  margin-right: 0.3rem;
+}
+
+.mapa {
+  height: 300px;
+  margin: 1rem auto;
+  width: 90%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.busca {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.busca input {
+  padding: 0.7rem;
+  border-radius: 8px;
+  border: none;
+  width: 70%;
+  background-color: #8DB4F4;
+  color: #001933;
+}
+
+.busca button {
+  padding: 0.7rem 1rem;
+  border: none;
+  background: #43a047;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.pedidos {
+  padding: 1rem;
+  text-align: center;
+}
+
+.legenda {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.legendaIcon {
+  width: 16px;
+  vertical-align: middle;
+  margin-right: 0.3rem;
+}
+
+.urgente {
+  color: #e53935;
+}
+
+.importante {
+  color: #fbc02d;
+}
+
+.atendido {
+  color: #43a047;
+}
+
+.cardAjuda {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: left;
+  margin: 0 auto;
+  width: 90%;
+  max-width: 400px;
+  backdrop-filter: blur(6px);
+  position: relative;
+}
+
+.statusIcon {
+  width: 30px;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.btnVerde {
+  width: 100%;
+  margin-top: 1rem;
+  background-color: #43a047;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 1rem;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.navegacao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.navegacao button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.bolinhas {
+  display: flex;
+  gap: 0.3rem;
+  justify-content: center;
+}
+
+.bolinhas span {
+  font-size: 0.8rem;
+  color: #8DB4F4;
+}
+
+.bolinhas .ativa {
+  color: white;
+}
+
+.leaflet-container {
+  height: 100vh;
+  width: 100%;
+  z-index: 0;
+}
+
+.mapas-page {
+  position: relative;
+}
