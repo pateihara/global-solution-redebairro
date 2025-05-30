@@ -1,0 +1,102 @@
+/* src/pages/SobrePage.css */
+
+.sobre-page {
+  background-color: #142C51;
+  background-image: url("../assets/img/background@4x.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: contain;
+  color: white;
+  padding: 2rem 1rem 6rem;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  .sobre-page {
+    background-image: url("../assets/img/backgrounddesktop.png");
+    background-repeat: repeat-x;
+    background-size: auto;
+  }
+}
+
+.sobre-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sobre-header .logo {
+  width: 200px;
+  margin-bottom: 0.5rem;
+}
+
+.sobre-header .slogan {
+  font-size: 1rem;
+  color: #cbd5e1;
+}
+
+.sobre-section {
+  margin-bottom: 2rem;
+}
+
+.sobre-section h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  font-weight: bold;
+}
+
+.sobre-section p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 0.7rem;
+  color: #e2e8f0;
+}
+
+.equipe {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.membro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.membro img {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 0.3rem;
+}
+
+.membro p {
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.botoes-links {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.botao-claro {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  background-color: #8DB4F4;
+  color: #001933;
+  font-weight: bold;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  flex: 1;
+}
+.botao-claro:hover {
+  background-color: #6a98d6;
+}

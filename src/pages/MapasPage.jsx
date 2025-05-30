@@ -1,6 +1,6 @@
 // src/pages/MapasPage.jsx
 import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Polygon, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import BottomNav from "../components/BottomNav";
@@ -19,6 +19,7 @@ import styles from "./MapasPage.module.css";
 export default function MapasPage() {
   const center = [-23.55052, -46.633308];
   const [pedidos, setPedidos] = useState([]);
+  const [zonas, setZonas] = useState([]);
   const [indexAtual, setIndexAtual] = useState(0);
 
   useEffect(() => {
@@ -30,6 +31,12 @@ export default function MapasPage() {
         setPedidos([dadosAjuda]);
       }
     }
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/zonas")
+      .then((res) => res.json())
+      .then((data) => setZonas(data));
   }, []);
 
   const proximo = () => {
@@ -82,7 +89,7 @@ export default function MapasPage() {
               src={add_location}
               alt="Pontos Seguros"
               className={styles.filtroIcon}
-            />{" "}
+            />
             Pontos Seguros
           </span>
           <span>
@@ -90,7 +97,7 @@ export default function MapasPage() {
               src={alert}
               alt="Áreas Afetadas"
               className={styles.filtroIcon}
-            />{" "}
+            />
             Áreas Afetadas
           </span>
           <span>
@@ -98,7 +105,7 @@ export default function MapasPage() {
               src={ajuda}
               alt="Pedidos Ajuda"
               className={styles.filtroIcon}
-            />{" "}
+            />
             Pedidos de Ajuda
           </span>
         </div>
@@ -114,12 +121,41 @@ export default function MapasPage() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+
+        {zonas.map((zona, i) => {
+          if (zona.tipo === "area_afetada" && zona.poligono) {
+            return (
+              <Polygon
+                key={i}
+                positions={zona.poligono}
+                pathOptions={{
+                  color: "#e53935",
+                  fillColor: "#e53935",
+                  fillOpacity: 0.3,
+                  weight: 2,
+                }}
+              />
+            );
+          } else if (zona.tipo === "ponto_seguro" && zona.lat && zona.lon) {
+            return (
+              <Marker
+                key={i}
+                position={[zona.lat, zona.lon]}
+                icon={gerarIconeLeaflet(add_location)}
+              >
+                <Popup>{zona.bairro} - Ponto Seguro</Popup>
+              </Marker>
+            );
+          }
+          return null;
+        })}
+
         {pedidos.map(
           (pedido, i) =>
             pedido.lat &&
             pedido.lon && (
               <Marker
-                key={i}
+                key={`pedido-${i}`}
                 position={[pedido.lat, pedido.lon]}
                 icon={gerarIconeLeaflet(
                   obterIconeStatus(pedido.tiposAjuda || [])
@@ -152,7 +188,7 @@ export default function MapasPage() {
               src={urgenteIcon}
               alt="❤️ Urgente"
               className={styles.legendaIcon}
-            />{" "}
+            />
             Urgente
           </span>
           <span>
@@ -160,7 +196,7 @@ export default function MapasPage() {
               src={importanteIcon}
               alt="💛 Importante"
               className={styles.legendaIcon}
-            />{" "}
+            />
             Importante
           </span>
           <span>
@@ -168,7 +204,7 @@ export default function MapasPage() {
               src={atentido}
               alt="💚 Atendido"
               className={styles.legendaIcon}
-            />{" "}
+            />
             Atendido
           </span>
         </div>

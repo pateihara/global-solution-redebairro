@@ -1,0 +1,116 @@
+/* src/pages/AlertasPage.css */
+
+.alertas-page {
+  min-height: 100vh;
+  padding: 2rem 1rem 6rem;
+  background-color: #142C51;
+  background-image: url('../assets/img/background@4x.png');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: contain;
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
+@media (min-width: 768px) {
+  .alertas-page {
+    background-image: url('../assets/img/backgrounddesktop.png');
+    background-repeat: repeat-x;
+    background-size: auto;
+  }
+}
+
+.alertas-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.alertas-header img {
+  width: 200px;
+  margin-bottom: 0.5rem;
+}
+
+.alertas-header .slogan {
+  font-size: 1rem;
+  color: #cbd5e1;
+}
+
+.alertas-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 2rem 0 1rem;
+}
+
+.alertas-intro {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  color: #e2e8f0;
+  text-align: center;
+}
+
+.alertas-box {
+  background-color: rgba(141, 180, 244, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.alertas-box p {
+  margin: 0;
+}
+
+.alertas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.alerta-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.alerta-card strong {
+  font-weight: bold;
+}
+
+.alerta-card .titulo {
+  font-weight: bold;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alerta-card .localizacao,
+.alerta-card .emitido {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+.alertas-box.inline-icon {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.alertas-box .small-icon {
+  width: 20px;
+  height: 20px;
+}
