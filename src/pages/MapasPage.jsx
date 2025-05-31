@@ -1,4 +1,5 @@
 // src/pages/MapasPage.jsx
+// src/pages/MapasPage.jsx
 import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Polygon, Popup } from "react-leaflet";
 import L from "leaflet";
@@ -21,22 +22,35 @@ export default function MapasPage() {
   const [pedidos, setPedidos] = useState([]);
   const [zonas, setZonas] = useState([]);
   const [indexAtual, setIndexAtual] = useState(0);
+  const [ajudados, setAjudados] = useState([]);
 
   useEffect(() => {
     const dadosAjuda = JSON.parse(localStorage.getItem("pedidoAjuda"));
     if (dadosAjuda) {
-      const pedidosComStatus = Array.isArray(dadosAjuda)
-        ? dadosAjuda.map((p) => ({ ...p, atendido: p.atendido || false }))
-        : [{ ...dadosAjuda, atendido: dadosAjuda.atendido || false }];
-      setPedidos(pedidosComStatus);
+      if (Array.isArray(dadosAjuda)) {
+        setPedidos(dadosAjuda);
+      } else {
+        setPedidos([dadosAjuda]);
+      }
     }
+
+    const ajudadosLocal = localStorage.getItem("ajudados") || "[]";
+    setAjudados(JSON.parse(ajudadosLocal));
   }, []);
 
   useEffect(() => {
     fetch("/api/zonas")
       .then((res) => res.json())
-      .then((data) => setZonas(data))
-      .catch((err) => console.error("Erro ao buscar zonas:", err));
+      .then((data) => {
+        setZonas(data);
+        localStorage.setItem("zonasCache", JSON.stringify(data));
+      })
+      .catch(() => {
+        const cache = localStorage.getItem("zonasCache");
+        if (cache) {
+          setZonas(JSON.parse(cache));
+        }
+      });
   }, []);
 
   const proximo = () => {
@@ -51,14 +65,8 @@ export default function MapasPage() {
     }
   };
 
-  const enviarAjuda = () => {
-    const novosPedidos = [...pedidos];
-    novosPedidos[indexAtual].atendido = true;
-    setPedidos(novosPedidos);
-    localStorage.setItem("pedidoAjuda", JSON.stringify(novosPedidos));
-  };
-
-  const obterIconeStatus = (tiposAjuda) => {
+  const obterIconeStatus = (tiposAjuda, id) => {
+    if (ajudados.includes(id)) return atentido;
     const tipos = tiposAjuda.map((t) => t.toLowerCase());
     if (tipos.includes("alimento") || tipos.includes("medicamentos")) {
       return urgenteIcon;
@@ -84,6 +92,12 @@ export default function MapasPage() {
       iconAnchor: [16, 32],
       popupAnchor: [0, -32],
     });
+  };
+
+  const marcarComoAjudado = (id) => {
+    const atualizados = [...ajudados, id];
+    setAjudados(atualizados);
+    localStorage.setItem("ajudados", JSON.stringify(atualizados));
   };
 
   return (
@@ -168,9 +182,7 @@ export default function MapasPage() {
                 key={`pedido-${i}`}
                 position={[pedido.lat, pedido.lon]}
                 icon={gerarIconeLeaflet(
-                  pedido.atendido
-                    ? atentido
-                    : obterIconeStatus(pedido.tiposAjuda || [])
+                  obterIconeStatus(pedido.tiposAjuda || [], pedido.id)
                 )}
               >
                 <Popup>
@@ -200,7 +212,7 @@ export default function MapasPage() {
               src={urgenteIcon}
               alt="❤️ Urgente"
               className={styles.legendaIcon}
-            />
+            />{" "}
             Urgente
           </span>
           <span>
@@ -208,7 +220,7 @@ export default function MapasPage() {
               src={importanteIcon}
               alt="💛 Importante"
               className={styles.legendaIcon}
-            />
+            />{" "}
             Importante
           </span>
           <span>
@@ -216,7 +228,7 @@ export default function MapasPage() {
               src={atentido}
               alt="💚 Atendido"
               className={styles.legendaIcon}
-            />
+            />{" "}
             Atendido
           </span>
         </div>
@@ -224,11 +236,10 @@ export default function MapasPage() {
         {pedidos.length > 0 && (
           <div className={styles.cardAjuda}>
             <img
-              src={
-                pedidos[indexAtual].atendido
-                  ? atentido
-                  : obterIconeStatus(pedidos[indexAtual].tiposAjuda || [])
-              }
+              src={obterIconeStatus(
+                pedidos[indexAtual].tiposAjuda || [],
+                pedidos[indexAtual].id
+              )}
               alt="Status"
               className={styles.statusIcon}
             />
@@ -249,17 +260,14 @@ export default function MapasPage() {
             <p>
               <strong>Nome:</strong> {pedidos[indexAtual].nome}
             </p>
-
-            {pedidos[indexAtual].atendido ? (
-              <button className={styles.btnVerde} disabled>
-                Pedido atendido 💚
-              </button>
-            ) : (
-              <button className={styles.btnVerde} onClick={enviarAjuda}>
+            {!ajudados.includes(pedidos[indexAtual].id) && (
+              <button
+                className={styles.btnVerde}
+                onClick={() => marcarComoAjudado(pedidos[indexAtual].id)}
+              >
                 Enviar ajuda
               </button>
             )}
-
             <div className={styles.navegacao}>
               <button onClick={anterior} disabled={indexAtual === 0}>
                 <img src={icoleft} alt="Anterior" />

@@ -21,10 +21,19 @@ export default function AlertasPage() {
   const [alertas, setAlertas] = useState([]);
 
   useEffect(() => {
-    fetch("/api/alertas")
-      .then((res) => res.json())
-      .then((data) => setAlertas(data))
-      .catch((error) => console.error("Erro ao carregar alertas:", error));
+    const carregarAlertas = async () => {
+      try {
+        const res = await fetch("/api/alertas");
+        const data = await res.json();
+        setAlertas(data);
+        localStorage.setItem("alertasCache", JSON.stringify(data));
+      } catch {
+        console.warn("Sem conexão. Carregando alertas do cache local.");
+        const cache = localStorage.getItem("alertasCache");
+        if (cache) setAlertas(JSON.parse(cache));
+      }
+    };
+    carregarAlertas();
   }, []);
 
   return (
