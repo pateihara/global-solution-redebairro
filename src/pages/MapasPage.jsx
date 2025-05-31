@@ -25,11 +25,10 @@ export default function MapasPage() {
   useEffect(() => {
     const dadosAjuda = JSON.parse(localStorage.getItem("pedidoAjuda"));
     if (dadosAjuda) {
-      if (Array.isArray(dadosAjuda)) {
-        setPedidos(dadosAjuda);
-      } else {
-        setPedidos([dadosAjuda]);
-      }
+      const pedidosComStatus = Array.isArray(dadosAjuda)
+        ? dadosAjuda.map((p) => ({ ...p, atendido: p.atendido || false }))
+        : [{ ...dadosAjuda, atendido: dadosAjuda.atendido || false }];
+      setPedidos(pedidosComStatus);
     }
   }, []);
 
@@ -50,6 +49,13 @@ export default function MapasPage() {
     if (indexAtual > 0) {
       setIndexAtual(indexAtual - 1);
     }
+  };
+
+  const enviarAjuda = () => {
+    const novosPedidos = [...pedidos];
+    novosPedidos[indexAtual].atendido = true;
+    setPedidos(novosPedidos);
+    localStorage.setItem("pedidoAjuda", JSON.stringify(novosPedidos));
   };
 
   const obterIconeStatus = (tiposAjuda) => {
@@ -162,7 +168,9 @@ export default function MapasPage() {
                 key={`pedido-${i}`}
                 position={[pedido.lat, pedido.lon]}
                 icon={gerarIconeLeaflet(
-                  obterIconeStatus(pedido.tiposAjuda || [])
+                  pedido.atendido
+                    ? atentido
+                    : obterIconeStatus(pedido.tiposAjuda || [])
                 )}
               >
                 <Popup>
@@ -216,7 +224,11 @@ export default function MapasPage() {
         {pedidos.length > 0 && (
           <div className={styles.cardAjuda}>
             <img
-              src={obterIconeStatus(pedidos[indexAtual].tiposAjuda || [])}
+              src={
+                pedidos[indexAtual].atendido
+                  ? atentido
+                  : obterIconeStatus(pedidos[indexAtual].tiposAjuda || [])
+              }
               alt="Status"
               className={styles.statusIcon}
             />
@@ -237,7 +249,17 @@ export default function MapasPage() {
             <p>
               <strong>Nome:</strong> {pedidos[indexAtual].nome}
             </p>
-            <button className={styles.btnVerde}>Enviar ajuda</button>
+
+            {pedidos[indexAtual].atendido ? (
+              <button className={styles.btnVerde} disabled>
+                Pedido atendido 💚
+              </button>
+            ) : (
+              <button className={styles.btnVerde} onClick={enviarAjuda}>
+                Enviar ajuda
+              </button>
+            )}
+
             <div className={styles.navegacao}>
               <button onClick={anterior} disabled={indexAtual === 0}>
                 <img src={icoleft} alt="Anterior" />

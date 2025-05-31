@@ -21,7 +21,7 @@ export default function AlertasPage() {
   const [alertas, setAlertas] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/alertas")
+    fetch("/api/alertas")
       .then((res) => res.json())
       .then((data) => setAlertas(data))
       .catch((error) => console.error("Erro ao carregar alertas:", error));
