@@ -6,6 +6,7 @@ import logo from "../assets/img/logo_redebairro.png";
 import lampIcon from "../assets/img/Lightbulb.png";
 import QRCode from "react-qr-code";
 import "./GerarCreditoPage.css";
+import { v4 as uuidv4 } from "uuid";
 
 export default function GerarCreditoPage() {
   const navigate = useNavigate();
@@ -25,8 +26,16 @@ export default function GerarCreditoPage() {
     e.preventDefault();
     const data = {
       ...formData,
+      id: uuidv4(),
       dataGerado: new Date().toISOString(),
     };
+
+    const creditosGerados = JSON.parse(
+      localStorage.getItem("creditosGerados") || "[]"
+    );
+    creditosGerados.push(data);
+    localStorage.setItem("creditosGerados", JSON.stringify(creditosGerados));
+
     setQrcodeData(JSON.stringify(data));
   };
 

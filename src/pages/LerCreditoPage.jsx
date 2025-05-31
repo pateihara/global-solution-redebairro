@@ -1,4 +1,3 @@
-// src/pages/LerCreditoPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
@@ -19,13 +18,27 @@ export default function LerCreditoPage() {
       html5QrCode
         .start(
           { facingMode: "environment" },
-          {
-            fps: 10,
-            qrbox: { width: 250, height: 250 },
-          },
+          { fps: 10, qrbox: { width: 250, height: 250 } },
           (decodedText) => {
             try {
               const parsed = JSON.parse(decodedText);
+              const creditosRecebidos = JSON.parse(
+                localStorage.getItem("creditosRecebidos") || "[]"
+              );
+
+              const jaExiste = creditosRecebidos.some(
+                (c) => c.id === parsed.id
+              );
+              if (jaExiste) {
+                alert("Este crédito já foi registrado.");
+                return;
+              }
+
+              creditosRecebidos.push(parsed);
+              localStorage.setItem(
+                "creditosRecebidos",
+                JSON.stringify(creditosRecebidos)
+              );
               setResultado(parsed);
               html5QrCode.stop();
             } catch {
@@ -39,11 +52,10 @@ export default function LerCreditoPage() {
           alert("Erro ao acessar a câmera");
         });
     }
+
     return () => {
       if (html5QrCode) {
-        html5QrCode.stop().then(() => {
-          html5QrCode.clear();
-        });
+        html5QrCode.stop().then(() => html5QrCode.clear());
       }
     };
   }, [showScanner]);
@@ -59,17 +71,12 @@ export default function LerCreditoPage() {
       <p className="intro">Escaneie um crédito solidário recebido.</p>
       <p className="descricao">
         Aponte a câmera para o QR Code gerado por um morador ou comerciante. Ao
-        escanear, você poderá visualizar os dados da troca registrada — como o
-        tipo de item, quem enviou e o valor combinado.
+        escanear, você poderá visualizar os dados da troca registrada.
       </p>
 
       <div className="info-box">
         <img src={lampIcon} alt="Dica" />
-        <p>
-          Esse registro serve como um comprovante simbólico durante a
-          emergência. O acerto final pode ser feito depois, conforme combinado
-          entre as partes.
-        </p>
+        <p>Esse registro serve como um comprovante simbólico.</p>
       </div>
 
       {resultado ? (
