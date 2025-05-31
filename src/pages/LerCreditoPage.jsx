@@ -9,6 +9,7 @@ import "./LerCreditoPage.css";
 export default function LerCreditoPage() {
   const navigate = useNavigate();
   const [showScanner, setShowScanner] = useState(false);
+  const [mensagem, setMensagem] = useState("");
   const [resultado, setResultado] = useState(null);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function LerCreditoPage() {
               );
 
               const jaExiste = creditosRecebidos.some(
-                (c) => c.id === parsed.id
+                (c) => JSON.stringify(c) === decodedText
               );
               if (jaExiste) {
                 alert("Este crédito já foi registrado.");
@@ -39,8 +40,19 @@ export default function LerCreditoPage() {
                 "creditosRecebidos",
                 JSON.stringify(creditosRecebidos)
               );
-              setResultado(parsed);
-              html5QrCode.stop();
+
+              html5QrCode
+                .stop()
+                .then(() => html5QrCode.clear())
+                .then(() => {
+                  setShowScanner(false);
+                  setMensagem("Crédito registrado com sucesso!");
+                  setResultado(parsed);
+                })
+                .catch((err) => {
+                  console.error("Erro ao parar scanner:", err);
+                  alert("Erro ao finalizar leitura do QR Code.");
+                });
             } catch {
               alert("QR Code inválido");
             }
@@ -55,10 +67,17 @@ export default function LerCreditoPage() {
 
     return () => {
       if (html5QrCode) {
-        html5QrCode.stop().then(() => html5QrCode.clear());
+        try {
+          html5QrCode
+            .stop()
+            .then(() => html5QrCode.clear())
+            .catch(() => {});
+        } catch (err) {
+          console.warn("Erro ao limpar scanner na desmontagem:", err);
+        }
       }
     };
-  }, [showScanner]);
+  }, [showScanner, navigate]);
 
   return (
     <div className="ler-credito-page">
@@ -79,24 +98,32 @@ export default function LerCreditoPage() {
         <p>Esse registro serve como um comprovante simbólico.</p>
       </div>
 
+      {mensagem && (
+        <div className="feedback-sucesso">
+          <p>{mensagem}</p>
+        </div>
+      )}
+
       {resultado ? (
         <div className="resultado-box">
           <h3>Dados do Crédito:</h3>
           <p>
-            <strong>Item:</strong> {resultado.tipo}
+            <strong>Item:</strong> {resultado?.tipo || "-"}
           </p>
           <p>
-            <strong>Quantidade:</strong> {resultado.quantidade}
+            <strong>Quantidade:</strong> {resultado?.quantidade || "-"}
           </p>
           <p>
-            <strong>Valor:</strong> {resultado.valor}
+            <strong>Valor:</strong> {resultado?.valor || "-"}
           </p>
           <p>
-            <strong>Comentário:</strong> {resultado.comentario}
+            <strong>Comentário:</strong> {resultado?.comentario || "-"}
           </p>
           <p>
             <strong>Data:</strong>{" "}
-            {new Date(resultado.dataGerado).toLocaleString()}
+            {resultado?.dataGerado
+              ? new Date(resultado.dataGerado).toLocaleString()
+              : "-"}
           </p>
           <button className="btn-claro" onClick={() => setResultado(null)}>
             Ler outro
