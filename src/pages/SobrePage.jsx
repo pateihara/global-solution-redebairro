@@ -84,7 +84,12 @@ export default function SobrePage() {
           </button>
           <button
             className="botao-claro"
-            onClick={() => window.open("#", "_blank")}
+            onClick={() =>
+              window.open(
+                "https://github.com/pateihara/global-solution-redebairro",
+                "_blank"
+              )
+            }
           >
             GitHub
           </button>

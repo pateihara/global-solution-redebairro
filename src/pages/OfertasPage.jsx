@@ -4,8 +4,11 @@ import BottomNav from "../components/BottomNav";
 import logo from "../assets/img/logo_redebairro.png";
 import ajudaIcon from "../assets/img/ajudaIcon.png"; // ícone do card
 import "./OfertasPage.css";
+import { useNavigate } from "react-router-dom";
 
 export default function OfertasPage() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     nome: "",
     localizacao: "",
@@ -145,7 +148,11 @@ export default function OfertasPage() {
         ></textarea>
 
         <button type="submit">Enviar ajuda</button>
-        <button type="button" className="btn-mapa">
+        <button
+          type="button"
+          className="btn-mapa"
+          onClick={() => navigate("/mapas")}
+        >
           Ver pedidos que posso ajudar
         </button>
       </form>

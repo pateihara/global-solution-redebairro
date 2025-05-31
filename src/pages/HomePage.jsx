@@ -6,8 +6,10 @@ import addLocation from "../assets/img/add_location_alt.png";
 import alertIcon from "../assets/img/brightness_alert.png";
 import qrCode from "../assets/img/qr_code_scanner.png";
 import BottomNav from "../components/BottomNav";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+  const navigate = useNavigate();
   return (
     <div className="homepage">
       <header className="header">
@@ -46,9 +48,15 @@ export default function HomePage() {
       </section>
 
       <section className="botoes">
-        <button className="btn-vermelho">Preciso de Ajuda</button>
-        <button className="btn-verde">Quero Ajudar</button>
-        <button className="btn-mapa">Ver Mapa</button>
+        <button className="btn-vermelho" onClick={() => navigate("/ajuda")}>
+          Preciso de Ajuda
+        </button>
+        <button className="btn-verde" onClick={() => navigate("/ofertas")}>
+          Quero Ajudar
+        </button>
+        <button className="btn-mapa" onClick={() => navigate("/mapas")}>
+          Ver Mapa
+        </button>
       </section>
 
       <BottomNav />
