@@ -1,13 +1,73 @@
-# React + Vite
+Rede Bairro 🌍
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Rede Bairro é uma plataforma solidária desenvolvida para conectar moradores de um mesmo bairro, especialmente em situações de emergência como apagões, enchentes ou isolamento. O sistema funciona com ou sem internet, oferecendo funcionalidades críticas mesmo offline.
 
-Currently, two official plugins are available:
+Este projeto foi desenvolvido como resposta prática e criativa ao desafio Global Solutions 2025 | 1TWDOR, proposto pela FIAP, que busca estimular o uso da tecnologia, design e empatia em soluções reais para eventos extremos da natureza.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔧 Funcionalidades
 
-## Expanding the ESLint configuration
+📍 Mapa comunitário interativo com pontos seguros e áreas afetadas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# global-solution-redebairro
+🚨 Alertas locais emitidos por moradores ou autoridades
+
+🤝 Pedidos e ofertas de ajuda visíveis em tempo real
+
+📲 QR Code solidário para uso offline de créditos entre vizinhos
+
+🛠️ PWA (Progressive Web App): instala no celular, funciona offline
+
+📦 Cache local: alertas e dados importantes continuam acessíveis sem rede
+
+🎯 Objetivo do Projeto
+
+Desenvolver uma proposta de plataforma inovadora, com uso de tecnologias acessíveis, capaz de:
+
+Responder a eventos extremos da natureza como enchentes, secas ou isolamento
+
+Reforçar laços de solidariedade local mesmo sem conexão à internet
+
+Promover apoio mútuo, prevenção e reconstrução em situações de calamidade
+
+Oferecer recursos interativos como formulários, validações e mapas dinâmicos
+
+🧠 Tecnologias utilizadas
+
+React + Vite
+
+Leaflet para mapas interativos
+
+Vercel (deploy com suporte a rotas /api)
+
+Vite PWA Plugin
+
+LocalStorage para fallback offline
+
+🚀 Como rodar localmente
+
+npm install
+npm run dev
+
+🔗 Deploy
+
+A aplicação está hospedada na Vercel e pode ser acessada por:
+👉 https://global-solution-redebairro.vercel.app
+
+🔗 Repositório no GitHub:
+👉 https://github.com/pateihara/global-solution-redebairro
+
+🎥 Vídeo pitch em breve disponível.
+👉 https://global-solution-redebairro.vercel.app
+
+👥 Equipe de Desenvolvimento
+
+Projeto desenvolvido por estudantes da FIAP para o desafio Global Solutions 2025:
+
+👩‍💻 Natalia Guaita
+
+👩‍💻 Patricia Eihara
+
+👨‍💻 Rafael Santos
+
+📄 Licença
+
+MIT
