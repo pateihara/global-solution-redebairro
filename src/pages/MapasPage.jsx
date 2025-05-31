@@ -34,9 +34,10 @@ export default function MapasPage() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:3000/zonas")
+    fetch("/api/zonas")
       .then((res) => res.json())
-      .then((data) => setZonas(data));
+      .then((data) => setZonas(data))
+      .catch((err) => console.error("Erro ao buscar zonas:", err));
   }, []);
 
   const proximo = () => {
@@ -126,8 +127,11 @@ export default function MapasPage() {
           if (zona.tipo === "area_afetada" && zona.poligono) {
             return (
               <Polygon
-                key={i}
-                positions={zona.poligono}
+                key={zona.id || i}
+                positions={zona.poligono.map(([lat, lon]) => [
+                  parseFloat(lat),
+                  parseFloat(lon),
+                ])}
                 pathOptions={{
                   color: "#e53935",
                   fillColor: "#e53935",
@@ -139,7 +143,7 @@ export default function MapasPage() {
           } else if (zona.tipo === "ponto_seguro" && zona.lat && zona.lon) {
             return (
               <Marker
-                key={i}
+                key={zona.id || i}
                 position={[zona.lat, zona.lon]}
                 icon={gerarIconeLeaflet(add_location)}
               >
